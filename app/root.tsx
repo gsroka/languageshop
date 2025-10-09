@@ -8,6 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
+import { PWAProvider } from "./components/PWAProvider";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -28,7 +29,26 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        
+        {/* PWA Configuration */}
+        <link rel="manifest" href="/manifest.webmanifest" />
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#1f2937" media="(prefers-color-scheme: dark)" />
+        
+        {/* Apple PWA Support */}
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="LanguageShop" />
+        <link rel="apple-touch-icon" href="/pwa-192x192.png" />
+        
+        {/* Microsoft PWA Support */}
+        <meta name="msapplication-TileImage" content="/pwa-192x192.png" />
+        <meta name="msapplication-TileColor" content="#ffffff" />
+        
+        {/* Security */}
+        <meta name="referrer" content="strict-origin-when-cross-origin" />
+        
         <Meta />
         <Links />
       </head>
@@ -42,7 +62,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  return (
+    <PWAProvider>
+      <Outlet />
+    </PWAProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
