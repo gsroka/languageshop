@@ -9,6 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import { PWAProvider } from "./components/PWAProvider";
+import { Toaster } from "~/components/ui/sonner";
 import "./app.css";
 
 export const links: Route.LinksFunction = () => [
@@ -52,8 +53,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
-        {children}
+      <body className="min-h-screen bg-background font-sans antialiased">
+        <div className="flex min-h-screen flex-col">
+          <main className="flex-1">
+            {children}
+          </main>
+        </div>
+        <Toaster />
         <ScrollRestoration />
         <Scripts />
       </body>
