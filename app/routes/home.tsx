@@ -9,8 +9,6 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-6">LanguageShop</h1>
-    </div>
+    <div className="p-6">🏠 Home Page – Product Catalog Coming Soon</div>
   );
 }
