@@ -80,23 +80,25 @@
 
 ```
 language-shop/
-├── app/                    # Main application directory (replaces src/)
-│   ├── routes/             # File-based routing (e.g., routes.products.$id.tsx)
-│   ├── components/         # Shared UI and feature components
-│   │   ├── ui/             # Button, Input, Badge
-│   │   ├── layout/         # Header, Footer, Root layout
-│   │   └── features/       # ProductCard, CartItem, FilterPanel
-│   ├── hooks/              # useDebounce, useLocalStorage
-│   ├── stores/             # Zustand stores (cart, products, filters)
-│   ├── types/              # TypeScript interfaces (Product, CartItem)
-│   ├── utils/              # formatters, helpers
-│   ├── entry.client.tsx    # Client entry point
-│   └── entry.server.tsx    # Server entry point (for SSR)
-├── public/                 # Static assets, PWA manifest, icons
-├── tests/                  # Unit & integration tests
-├── e2e/                    # Playwright E2E tests
-├── vite.config.ts          # Vite + PWA config
-└── tsconfig.json           # With path alias: ~ → app/
+├── app/                        # Main application directory (replaces src/)
+│   ├── routes/                 # File-based routing (e.g., routes.products.$id.tsx)
+│   ├── components/             # Shared UI and feature components
+│   │   ├── ui/                 # Button, Input, Badge
+│   │   ├── layout/             # Header, Footer, Root layout
+│   │   └── features/           # ProductCard, CartItem, FilterPanel
+│   ├── hooks/                  # useDebounce, useLocalStorage
+│   ├── stores/                 # Zustand stores (cart, products, filters)
+│   ├── types/                  # TypeScript interfaces (Product, CartItem)
+│   ├── utils/                  # formatters, helpers
+│   ├── app.css                 # global styles
+│   └── root.tsx                # app root
+├── public/                     
+├── public/                     # Static assets, PWA manifest, icons
+│   └── manifest.webmanifest
+├── tests/                      # Unit & integration tests
+├── e2e/                        # Playwright E2E tests
+├── vite.config.ts              # Vite + PWA config
+└── tsconfig.json               # With path alias: ~ → app/
 ```
 
 ---
