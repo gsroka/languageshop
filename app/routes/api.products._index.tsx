@@ -6,6 +6,5 @@ import { getProducts } from "~/mocks/data/products";
  * @param request
  */
 export async function loader({ request }: LoaderFunctionArgs) {
-  const products = await getProducts();
-  return products;
+  return await getProducts();
 }

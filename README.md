@@ -191,7 +191,7 @@ pnpm test:e2e     # Run Playwright E2E tests
 
 ### Phase 7: PWA & Offline Support
 - [ ] Configure `vite-plugin-pwa` to cache routes and API
-- [ ] Add offline fallback page
+- [ ] Add an offline fallback page
 - [ ] Test offline mode in DevTools
 
 ### Phase 8: Testing
