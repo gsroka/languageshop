@@ -165,8 +165,8 @@ pnpm test:e2e     # Run Playwright E2E tests
 - [x] Add delay and error simulation in MSW
 
 ### Phase 3: Product Catalog & Filtering
-- [ ] Build `ProductList` and `ProductCard` components
-- [ ] Implement `useProductStore` with Zustand (fetch + cache)
+- [x] Build `ProductList` and `ProductCard` components
+- [x] Implement `useProductStore` with Zustand (fetch + cache)
 - [ ] Create `FilterPanel` with React Hook Form + Zod
 - [ ] Add search, category, price, size, color, availability filters
 - [ ] Connect filters to product store via `useFilterStore`

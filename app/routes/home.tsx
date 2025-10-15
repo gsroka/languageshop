@@ -1,4 +1,5 @@
 import type { Route } from "./+types/home";
+import { ProductList } from "~/components/features/ProductList";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -8,7 +9,5 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
-  return (
-    <div className="p-6">🏠 Home Page – Product Catalog Coming Soon</div>
-  );
+  return <ProductList />;
 }
