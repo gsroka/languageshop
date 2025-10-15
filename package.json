@@ -8,7 +8,8 @@
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "test:pwa": "pnpm build && cd build/client && python -m http.server 3000",
-    "serve:pwa": "cd build/client && python -m http.server 3000"
+    "serve:pwa": "cd build/client && python -m http.server 3000",
+    "msw:init": "msw init public --save"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -50,5 +51,10 @@
     "vite": "^7.1.7",
     "vite-plugin-pwa": "^1.0.3",
     "vite-tsconfig-paths": "^5.1.4"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

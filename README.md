@@ -92,7 +92,6 @@ language-shop/
 │   ├── utils/                  # formatters, helpers
 │   ├── app.css                 # global styles
 │   └── root.tsx                # app root
-├── public/                     
 ├── public/                     # Static assets, PWA manifest, icons
 │   └── manifest.webmanifest
 ├── tests/                      # Unit & integration tests
