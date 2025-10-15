@@ -150,19 +150,19 @@ pnpm test:e2e     # Run Playwright E2E tests
 - [x] Initialize Git + Conventional Commits
 
 ### Phase 1: Architecture, Routing & Typing
-- [ ] Define core types: `Product`, `CartItem`, `FilterOptions`
-- [ ] Create folder structure inside `app/`: `components/`, `stores/`, `types/`, etc.
-- [ ] Implement root layout (`app/root.tsx`)
-- [ ] Set up routes: `/`, `/products/:id`, `/cart`, `/checkout`
-- [ ] Add loading and error boundaries (React Router v7 conventions)
-- [ ] Create shared layout components: `Header`, `Footer`
+- [x] Define core types: `Product`, `CartItem`, `ProductVariant`
+- [x] Create folder structure inside `app/`: `components/`, `types/`, etc.
+- [x] Implement root layout (`app/root.tsx`)
+- [x] Set up routes: `/`, `/products/:id`, `/cart`, `/checkout`
+- [x] Add loading and error boundaries (React Router v7 conventions)
+- [x] Create shared layout components: `Header`, `Footer`
 
 ### Phase 2: Mock API with MSW
-- [ ] Install MSW
-- [ ] Create mock product data (5 categories, 20+ items)
-- [ ] Implement `GET /api/products` and `GET /api/products/:id`
-- [ ] Integrate `apiClient` abstraction in `app/api/client.ts`
-- [ ] Add delay and error simulation in MSW
+- [x] Install MSW
+- [x] Create mock product data (5 categories, 20+ items)
+- [x] Implement `GET /api/products` and `GET /api/products/:id`
+- [x] Integrate `apiClient` abstraction in `app/api/client.ts`
+- [x] Add delay and error simulation in MSW
 
 ### Phase 3: Product Catalog & Filtering
 - [ ] Build `ProductList` and `ProductCard` components
