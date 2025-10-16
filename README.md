@@ -167,9 +167,9 @@ pnpm test:e2e     # Run Playwright E2E tests
 ### Phase 3: Product Catalog & Filtering
 - [x] Build `ProductList` and `ProductCard` components
 - [x] Implement `useProductStore` with Zustand (fetch + cache)
-- [ ] Create `FilterPanel` with React Hook Form + Zod
-- [ ] Add search, category, price, size, color, availability filters
-- [ ] Connect filters to product store via `useFilterStore`
+- [x] Create `FilterPanel` with React Hook Form + Zod
+- [x] Add search, category, price, size, color, availability filters
+- [x] Connect filters to product store via `useFilterStore`
 
 ### Phase 4: Shopping Cart (Zustand + localStorage)
 - [ ] Create `useCartStore` with persistence via `useLocalStorage`
