@@ -1,29 +1,45 @@
 import { useProductStore } from "~/stores/useProductStore";
-import { useEffect } from "react";
-import { ProductCard } from "~/components/features/ProductCard";
+import { useEffect, useRef } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
+import { useFilteredProducts } from "~/hooks/useFilteredProducts";
+import { ProductCard } from "~/components/features/ProductCard";
 
+/**
+ * Product List Component
+ * @constructor
+ */
 export const ProductList = () => {
   const { products, loading, error, fetchProducts } = useProductStore();
+  const hasFetchedInitialData = useRef(false);
+
+  // Calculate filtered products based on search criteria
+  const filteredProducts = useFilteredProducts();
 
   useEffect(() => {
-    if (products.length === 0) {
+    if (products.length === 0 && !loading) {
+      console.log("ProductList: Initiating fetchProducts"); // Debug log
+
+      hasFetchedInitialData.current = true;
       fetchProducts();
     }
-  }, [products.length, fetchProducts]);
+  }, [products.length, loading]);
 
   if (error) {
+    console.log("ProductList: Showing error -", error); // Debug log
+
     return (
-      <div className="container py-8 text-center text-destructive">
+      <div className="container mx-auto py-8 px-4 text-center text-destructive">
         Failed to load products. Please try again later.
       </div>
     );
   }
 
-  return (
-    <div className="container py-6">
-      <h1 className="mb-6 text-3xl font-bold">Merch Collection</h1>
-      {loading && products.length === 0 ? (
+  if (loading) {
+    console.log("ProductList: Showing loading skeletons"); // Debug log
+
+    return (
+      <div className="container mx-autopx-4">
+        <h1 className="mb-6 text-3xl font-bold">Merch Collection</h1>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="space-y-3">
@@ -34,13 +50,38 @@ export const ProductList = () => {
             </div>
           ))}
         </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+      </div>
+    );
+  }
+
+  // Check if the initial fetch attempt was made
+  if (hasFetchedInitialData.current && !loading && filteredProducts.length === 0) {
+    console.log("ProductList: Showing 'No products match...' message (post-fetch, filtered list is empty)"); // Debug log
+
+    return (
+      <div className="container mx-auto px-4">
+        <h1 className="mb-6 text-3xl font-bold">Merch Collection</h1>
+        <div className="col-span-full py-12 text-center text-muted-foreground">
+          No products match your search criteria.
         </div>
-      )}
+      </div>
+    );
+  }
+
+  console.log(
+    "ProductList: Products loaded, showing filtered results. Count:",
+    filteredProducts.length,
+  ); // Debug log
+  console.log("ProductList: Raw store products count:", products.length); // Debug log
+
+  return (
+    <div className="container mx-auto px-4">
+      <h1 className="mb-6 text-3xl font-bold">Merch Collection</h1>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {filteredProducts.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
     </div>
   );
 };
