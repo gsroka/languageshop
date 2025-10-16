@@ -1,5 +1,5 @@
 import React, { memo, useMemo } from "react";
-import type { Product } from "~/types";
+import type { Product } from "~/types/Product";
 import {
   Card,
   CardContent,
@@ -14,6 +14,10 @@ type ProductCardProps = {
   product: Product;
 };
 
+/**
+ * Format price as currency
+ * @param price
+ */
 const formatPrice = (price: number) =>
   new Intl.NumberFormat("en-US", {
     style: "currency",

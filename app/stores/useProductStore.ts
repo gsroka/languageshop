@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Product } from "~/types";
+import type { Product } from "~/types/Product";
 import { fetchProducts } from "~/api/client";
 
 /**
@@ -24,7 +24,7 @@ export const useProductStore = create<ProductStore>((set) => ({
     set({ loading: true, error: null });
     try {
       const data = await fetchProducts();
-      set({ products: data, loading: false });
+      set({ products: data, loading: false, error: null });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Failed to load products";

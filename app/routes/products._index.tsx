@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { fetchProducts } from "~/api/client";
-import type { Product } from "~/types";
+import type { Product } from "~/types/Product";
 
 /**
  * Products List Page
