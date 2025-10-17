@@ -3,6 +3,7 @@ import { useCartStore } from "~/stores/useCartStore";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Trash2Icon } from "lucide-react";
+import { Link } from "react-router";
 
 /**
  * Cart Item
@@ -37,11 +38,13 @@ export function CartItem({
 
   return (
     <div className="flex items-center gap-4 border-b py-4">
-      <img
-        src={product.images[0]}
-        alt={product.name}
-        className="h-16 w-16 object-cover rounded"
-      />
+      <Link to={`/products/${productId}`} className="block h-full">
+        <img
+          src={product.images[0]}
+          alt={product.name}
+          className="h-16 w-16 object-cover rounded"
+        />
+      </Link>
       <div className="flex-1">
         <h3 className="font-medium">{product.name}</h3>
         <p className="text-sm text-muted-foreground">

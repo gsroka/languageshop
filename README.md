@@ -178,10 +178,10 @@ pnpm test:e2e     # Run Playwright E2E tests
 - [x] Add cart badge in `Header`
 
 ### Phase 5: Product Detail Page
-- [ ] Create dynamic route `app/routes/products.$id.tsx`
-- [ ] Fetch product by ID
-- [ ] Display variants (size, color), image gallery, description
-- [ ] Add “Add to Cart” button with variant selection
+- [x] Create dynamic route `app/routes/products.$id.tsx`
+- [x] Fetch product by ID
+- [x] Display variants (size, color), image gallery, description
+- [x] Add “Add to Cart” button with variant selection
 
 ### Phase 6: Checkout Flow (Mock)
 - [ ] Build `CheckoutPage` with contact form (RHF + Zod)
