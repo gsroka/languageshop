@@ -1,112 +1,185 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
-import { fetchProductById } from "~/api/client";
-import type { Product } from "~/types/Product";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
-import { BadgeIcon, ShoppingCartIcon } from "lucide-react";
+import { Link, useLoaderData, useNavigate } from "react-router";
 import { Button } from "~/components/ui/button";
+import { BadgeIcon, ShoppingCartIcon } from "lucide-react";
+import type { Product, ProductVariant } from "~/types/Product";
+import { fetchProductById } from "~/api/client";
+import { useCartStore } from "~/stores/useCartStore";
+import { Alert, AlertDescription } from "~/components/ui/alert";
+
+/**
+ * Loader React Router (SSR & SPA)
+ */
+export async function loader({ params }: { params: { id: string } }) {
+  if (!params.id) throw new Response("Missing product ID", { status: 400 });
+  const product = await fetchProductById(params.id);
+  if (!product) throw new Response("Product not found", { status: 404 });
+  return product;
+}
+
+/**
+ * Variant Selector
+ * @param product
+ * @param selectedVariant
+ * @param setSelectedVariant
+ * @constructor
+ */
+function VariantSelector({
+  product,
+  selectedVariant,
+  setSelectedVariant,
+}: {
+  product: Product;
+  selectedVariant: ProductVariant | null;
+  setSelectedVariant: (v: ProductVariant | null) => void;
+}) {
+  return (
+    <>
+      <div>
+        <h3 className="font-medium">Size</h3>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {product.variants.map((variant) => (
+            <Button
+              key={variant.id}
+              variant={
+                selectedVariant?.id === variant.id ? "default" : "outline"
+              }
+              size="sm"
+              disabled={!variant.inStock}
+              onClick={() => setSelectedVariant(variant)}
+              className="capitalize"
+            >
+              {variant.size || "One size"}
+              {!variant.inStock && <span className="ml-1">(out of stock)</span>}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h3 className="font-medium">Color</h3>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {Array.from(
+            new Set(product.variants.map((v) => v.color).filter(Boolean)),
+          ).map((color) => {
+            const variant = product.variants.find(
+              (v) => v.color === color && v.inStock,
+            );
+            return (
+              <Button
+                key={color}
+                variant={
+                  selectedVariant?.color === color ? "default" : "outline"
+                }
+                size="sm"
+                disabled={!variant}
+                onClick={() => setSelectedVariant(variant || null)}
+                className="capitalize"
+              >
+                {color}
+              </Button>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+}
 
 /**
  * Product Detail Page
  * @constructor
  */
 export default function ProductDetail() {
-  const { id } = useParams<{ id: string }>();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
+  const product = useLoaderData() as Product;
+  const navigate = useNavigate();
+  const { addItem } = useCartStore();
+
+  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!id) {
-      setError("Product not found (no ID)");
-      setLoading(false);
-      return;
-    }
-    const fetchProduct = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const product = await fetchProductById(id);
-        setProduct(product);
-      } catch (error) {
-        setError("Failed to fetch product");
-      } finally {
-        setLoading(false);
+    if (product && !selectedVariant) {
+      const firstInStock = product.variants.find((v) => v.inStock);
+      if (firstInStock) {
+        setSelectedVariant(firstInStock);
+      } else {
+        setError("This product is currently out of stock.");
       }
-    };
+    }
+  }, [product, selectedVariant]);
 
-    fetchProduct();
-  }, [id]);
+  const price = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(product.price);
 
-  if (loading) return <div className="container mx-auto py-8 px-4 text-center">Loading...</div>;
-  if (error) return <div className="container mx-auto py-8 px-4 text-center text-destructive">Error: {error}</div>;
-  if (!product) return <div className="container mx-auto py-8 px-4 text-center text-muted-foreground">Product not found</div>;
+  const handleAddToCart = () => {
+    if (!selectedVariant) return;
+    addItem(product.id, selectedVariant.id);
+    navigate("/cart");
+  };
 
   return (
-    <div className="container mx-auto py-6 px-4">
-      <div className="flex flex-col lg:flex-row gap-6">
-        <div className="h-64 lg:h-auto lg:w-1/2 overflow-hidden bg-muted rounded-lg">
+    <div className="container mx-auto px-4">
+      <Link to={`/`}>
+        <Button variant="ghost" className="mb-6">
+          ← Back to catalog
+        </Button>
+      </Link>
+
+      <div className="grid gap-8 md:grid-cols-2">
+        {/* Product Image */}
+        <div className="flex h-96 items-center justify-center border bg-muted rounded-lg">
           {product.images[0] ? (
             <img
               src={product.images[0]}
               alt={product.name}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain p-4"
               loading="lazy"
             />
           ) : (
-            <div className="flex h-full items-center justify-center text-muted-foreground">
-              No image
-            </div>
+            <span className="text-muted-foreground">No image available</span>
           )}
         </div>
 
-        <div className="lg:w-1/2">
-          <Card className="h-full flex flex-col">
-            <CardHeader className="pb-2"> {/* Adjusted padding */}
-              <CardTitle className="text-2xl">{product.name}</CardTitle>
-              <BadgeIcon className="w-fit">
-                {product.category.replace("-", " ")}
-              </BadgeIcon>
-            </CardHeader>
-            <CardContent className="flex-1 pb-2">
-              <p className="text-lg font-bold mb-2">${product.price}</p>
-              <p className="text-muted-foreground mb-4">{product.description}</p>
+        {/* Product Info */}
+        <div>
+          <BadgeIcon variant="secondary" className="mb-2 capitalize">
+            {product.category.replace("-", " ")}
+          </BadgeIcon>
+          <h1 className="text-3xl font-bold">{product.name}</h1>
+          <p className="mt-2 text-2xl font-bold">{price}</p>
+          <p className="mt-4 text-muted-foreground">{product.description}</p>
 
-              <div className="mb-4">
-                <h3 className="font-semibold mb-2">Available Variants:</h3>
-                <div className="space-y-2">
-                  {product.variants.map((variant) => (
-                    <div key={variant.id} className="flex items-center justify-between border-b pb-2 last:border-0 last:pb-0">
-                      <div>
-                        {variant.size && <span className="mr-2">{variant.size}</span>}
-                        {variant.color && <span className="capitalize">{variant.color}</span>}
-                      </div>
-                      <span className={`px-2 py-1 rounded-full text-xs ${
-                        variant.inStock
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
-                      }`}>
-                        {variant.inStock ? "In Stock" : "Out of Stock"}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="pt-2">
-              <Button className="w-full">
-                <ShoppingCartIcon className="mr-2 h-4 w-4" />
-                Add to Cart
-              </Button>
-            </CardFooter>
-          </Card>
+          {error && (
+            <Alert variant="destructive" className="mt-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+
+          {/* Variant Selection */}
+          {product.variants.length > 1 && (
+            <div className="mt-6 space-y-4">
+              <VariantSelector
+                product={product}
+                selectedVariant={selectedVariant}
+                setSelectedVariant={setSelectedVariant}
+              />
+            </div>
+          )}
+
+          <Button
+            className="mt-6 w-full"
+            size="lg"
+            disabled={!selectedVariant || !selectedVariant.inStock}
+            onClick={handleAddToCart}
+          >
+            <ShoppingCartIcon className="mr-2 h-5 w-5" />
+            {selectedVariant?.inStock ? "Add to Cart" : "Out of Stock"}
+          </Button>
         </div>
       </div>
     </div>
