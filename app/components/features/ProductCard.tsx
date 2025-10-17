@@ -9,6 +9,7 @@ import {
 } from "~/components/ui/card";
 import { BadgeIcon, ShoppingCartIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
+import { useCartStore } from "~/stores/useCartStore";
 
 type ProductCardProps = {
   product: Product;
@@ -30,6 +31,14 @@ const formatPrice = (price: number) =>
  */
 export const ProductCard: React.FC<ProductCardProps> = memo(({ product }) => {
   const price = useMemo(() => formatPrice(product.price), [product.price]);
+  const { addItem } = useCartStore();
+
+  const handleAddToCart = () => {
+    const firstVariant = product.variants[0]; // @info: temporary
+    if (firstVariant && firstVariant.inStock) {
+      addItem(product.id, firstVariant.id);
+    }
+  };
 
   return (
     <Card className="flex flex-col overflow-hidden">
@@ -60,9 +69,9 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product }) => {
       </CardContent>
       <CardFooter className="mt-auto flex justify-between p-4 pt-2">
         <span className="text-lg font-bold">{price}</span>
-        <Button size="sm" variant="outline">
+        <Button size="sm" variant="outline" onClick={handleAddToCart} disabled={!product.variants.some(v => v.inStock)}>
           <ShoppingCartIcon className="mr-1 h-4 w-4" />
-          Add
+          {product.variants.some(v => v.inStock) ? "Add to Cart" : "Out of Stock"}
         </Button>
       </CardFooter>
     </Card>

@@ -66,7 +66,7 @@
 - **Routing & SSR**: [React Router v7](https://reactrouter.com/)
 - **Bundler**: [Vite 7](https://vitejs.dev/) for lightning-fast HMR
 - **State Management**: [Zustand 5.x](https://github.com/pmndrs/zustand) — minimal, typed, scalable
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) + `clsx` + `@headlessui/react`
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 - **Forms**: [React Hook Form v8](https://react-hook-form.com/) + [Zod](https://zod.dev/)
 - **API Mocking**: [MSW (Mock Service Worker)](https://mswjs.io/)
 - **PWA**: `vite-plugin-pwa`
@@ -172,10 +172,10 @@ pnpm test:e2e     # Run Playwright E2E tests
 - [x] Connect filters to product store via `useFilterStore`
 
 ### Phase 4: Shopping Cart (Zustand + localStorage)
-- [ ] Create `useCartStore` with persistence via `useLocalStorage`
-- [ ] Implement `addToCart`, `updateQuantity`, `removeFromCart`
-- [ ] Build `CartPage` with editable items
-- [ ] Add cart badge in `Header`
+- [x] Create `useCartStore` with persistence via Zustand `persist`
+- [x] Implement `addToCart`, `updateQuantity`, `removeFromCart`
+- [x] Build `CartPage` with editable items
+- [x] Add cart badge in `Header`
 
 ### Phase 5: Product Detail Page
 - [ ] Create dynamic route `app/routes/products.$id.tsx`
