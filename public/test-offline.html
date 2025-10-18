@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA Offline Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .online { background-color: #d4edda; color: #155724; }
+        .offline { background-color: #f8d7da; color: #721c24; }
+        .test-result { margin: 10px 0; padding: 10px; background: #f8f9fa; border-left: 4px solid #007bff; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>LanguageShop PWA Offline Test</h1>
+    
+    <div id="connection-status" class="status">
+        Checking connection...
+    </div>
+    
+    <div class="test-result">
+        <h3>Service Worker Status</h3>
+        <div id="sw-status">Checking...</div>
+    </div>
+    
+    <div class="test-result">
+        <h3>Cache Status</h3>
+        <div id="cache-status">Checking...</div>
+    </div>
+    
+    <div class="test-result">
+        <h3>Test Actions</h3>
+        <button onclick="testOfflineNavigation()">Test Offline Navigation</button>
+        <button onclick="checkCaches()">Check Cache Contents</button>
+        <button onclick="clearCaches()">Clear All Caches</button>
+    </div>
+    
+    <div id="test-results"></div>
+
+    <script>
+        // Connection status monitoring
+        function updateConnectionStatus() {
+            const statusEl = document.getElementById('connection-status');
+            if (navigator.onLine) {
+                statusEl.className = 'status online';
+                statusEl.textContent = '✅ Online - Connected to internet';
+            } else {
+                statusEl.className = 'status offline';
+                statusEl.textContent = '❌ Offline - No internet connection';
+            }
+        }
+
+        // Service Worker status check
+        async function checkServiceWorker() {
+            const statusEl = document.getElementById('sw-status');
+            
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    if (registration) {
+                        const sw = registration.active || registration.waiting || registration.installing;
+                        if (sw) {
+                            statusEl.innerHTML = `✅ Service Worker Active<br>
+                                <small>State: ${sw.state}<br>
+                                Script URL: ${sw.scriptURL}</small>`;
+                        } else {
+                            statusEl.innerHTML = '⚠️ Service Worker registered but not active';
+                        }
+                    } else {
+                        statusEl.innerHTML = '❌ No Service Worker registered';
+                    }
+                } catch (error) {
+                    statusEl.innerHTML = `❌ Error checking Service Worker: ${error.message}`;
+                }
+            } else {
+                statusEl.innerHTML = '❌ Service Worker not supported';
+            }
+        }
+
+        // Cache status check
+        async function checkCaches() {
+            const statusEl = document.getElementById('cache-status');
+            const resultsEl = document.getElementById('test-results');
+            
+            if ('caches' in window) {
+                try {
+                    const cacheNames = await caches.keys();
+                    statusEl.innerHTML = `✅ ${cacheNames.length} caches found:<br>
+                        <small>${cacheNames.join('<br>')}</small>`;
+                    
+                    // Check specific cache contents
+                    let cacheDetails = '<h3>Cache Contents:</h3>';
+                    for (const cacheName of cacheNames) {
+                        const cache = await caches.open(cacheName);
+                        const requests = await cache.keys();
+                        cacheDetails += `<div><strong>${cacheName}</strong> (${requests.length} entries):<br>`;
+                        requests.slice(0, 5).forEach(req => {
+                            cacheDetails += `<small>• ${req.url}</small><br>`;
+                        });
+                        if (requests.length > 5) {
+                            cacheDetails += `<small>... and ${requests.length - 5} more</small><br>`;
+                        }
+                        cacheDetails += '</div><br>';
+                    }
+                    resultsEl.innerHTML = cacheDetails;
+                } catch (error) {
+                    statusEl.innerHTML = `❌ Error checking caches: ${error.message}`;
+                }
+            } else {
+                statusEl.innerHTML = '❌ Cache API not supported';
+            }
+        }
+
+        // Test offline navigation
+        async function testOfflineNavigation() {
+            const resultsEl = document.getElementById('test-results');
+            resultsEl.innerHTML = '<h3>Testing Offline Navigation...</h3>';
+            
+            const testUrls = [
+                window.location.origin + '/',
+                window.location.origin + '/products',
+                window.location.origin + '/cart',
+                window.location.origin + '/offline'
+            ];
+            
+            let results = '';
+            for (const url of testUrls) {
+                try {
+                    const response = await fetch(url);
+                    const status = response.ok ? '✅' : '❌';
+                    results += `${status} ${url} - ${response.status} ${response.statusText}<br>`;
+                } catch (error) {
+                    results += `❌ ${url} - Error: ${error.message}<br>`;
+                }
+            }
+            
+            resultsEl.innerHTML = '<h3>Navigation Test Results:</h3>' + results;
+        }
+
+        // Clear all caches
+        async function clearCaches() {
+            if ('caches' in window) {
+                try {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(cacheNames.map(name => caches.delete(name)));
+                    document.getElementById('cache-status').innerHTML = '✅ All caches cleared';
+                    document.getElementById('test-results').innerHTML = '<h3>All caches have been cleared</h3>';
+                } catch (error) {
+                    document.getElementById('test-results').innerHTML = `<h3>Error clearing caches: ${error.message}</h3>`;
+                }
+            }
+        }
+
+        // Initialize
+        updateConnectionStatus();
+        checkServiceWorker();
+        checkCaches();
+
+        // Listen for connection changes
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        
+        // Auto-refresh status every 5 seconds
+        setInterval(() => {
+            updateConnectionStatus();
+            checkServiceWorker();
+        }, 5000);
+    </script>
+</body>
+</html>

@@ -7,8 +7,10 @@
     "dev": "react-router dev",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
-    "test:pwa": "pnpm build && cd build/client && python -m http.server 3000",
-    "serve:pwa": "cd build/client && python -m http.server 3000",
+    "test:pwa": "node scripts/test-pwa.js",
+    "test:pwa:quick": "pnpm build && pnpm start",
+    "test:pwa:validate": "pnpm build && node scripts/validate-pwa.js && pnpm start",
+    "serve:static": "cd build/client && python -m http.server 3001",
     "msw:init": "msw init public --save"
   },
   "dependencies": {
