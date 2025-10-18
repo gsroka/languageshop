@@ -1,7 +1,19 @@
 import type { Product } from "~/types/Product";
 
-const API_BASE =
-  typeof window === "undefined" ? "http://localhost:5173/api" : "/api";
+// API base URL for both development and production
+const API_BASE = (() => {
+  // Client-side
+  if (typeof window !== "undefined") {
+    return "/api";
+  }
+
+  // Server-side
+  if (process.env.NODE_ENV === "production") {
+    return "http://localhost:3000/api";
+  } else {
+    return "http://localhost:5173/api";
+  }
+})();
 
 /**
  * Fetch products from the server

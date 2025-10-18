@@ -32,8 +32,47 @@ export default defineConfig({
         // Skip waiting for a new service worker
         skipWaiting: true,
         clientsClaim: true,
+        
+        // Add offline fallback - use index.html if it exists, otherwise root route
+        navigateFallback: "/",
+        navigateFallbackDenylist: [/^\/api\//, /\.(?:png|jpg|jpeg|svg|gif|webp|avif|ico|css|js)$/],
+        
+        // Include additional patterns for React Router SSR
+        additionalManifestEntries: [
+          { url: "/", revision: null }
+        ],
 
         runtimeCaching: [
+          // HTML files - catch all routes for SPA
+          {
+            urlPattern: ({ request, url }) => {
+              // Cache all navigation requests (HTML pages)
+              return request.mode === 'navigate';
+            },
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "pages-cache",
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24, // 1 day
+              },
+              networkTimeoutSeconds: 3,
+            },
+          },
+          // Root and main routes
+          {
+            urlPattern: /^https?:\/\/[^\/]+\/?$/,
+            handler: "NetworkFirst",
+            options: {
+              cacheName: "root-cache",
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24,
+              },
+              networkTimeoutSeconds: 3,
+            },
+          },
+
           // Google Fonts
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,

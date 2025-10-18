@@ -8,7 +8,7 @@ import {
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import { PWAProvider } from "./components/PWAProvider";
+import { PWAProvider } from "./components/providers/PWAProvider";
 import { Toaster } from "~/components/ui/sonner";
 import "./app.css";
 

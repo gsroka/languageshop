@@ -190,9 +190,9 @@ pnpm test:e2e     # Run Playwright E2E tests
 - [x] On submit: show success modal, clear cart
 
 ### Phase 7: PWA & Offline Support
-- [ ] Configure `vite-plugin-pwa` to cache routes and API
-- [ ] Add an offline fallback page
-- [ ] Test offline mode in DevTools
+- [x] Configure `vite-plugin-pwa` to cache routes and API
+- [x] Add an offline fallback page
+- [x] Test offline mode in DevTools
 
 ### Phase 8: Testing
 - [ ] Unit tests for Zustand stores (Vitest)
