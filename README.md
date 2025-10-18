@@ -184,10 +184,10 @@ pnpm test:e2e     # Run Playwright E2E tests
 - [x] Add “Add to Cart” button with variant selection
 
 ### Phase 6: Checkout Flow (Mock)
-- [ ] Build `CheckoutPage` with contact form (RHF + Zod)
-- [ ] Validate name, email, address
-- [ ] Show order summary
-- [ ] On submit: show success modal, clear cart
+- [x] Build `CheckoutPage` with contact form (RHF + Zod)
+- [x] Validate name, email, address
+- [x] Show order summary
+- [x] On submit: show success modal, clear cart
 
 ### Phase 7: PWA & Offline Support
 - [ ] Configure `vite-plugin-pwa` to cache routes and API
