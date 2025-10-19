@@ -11,6 +11,7 @@ import { type CheckoutFormData, checkoutSchema } from "~/types/CheckoutSchema";
 import { useCartStore } from "~/stores/useCartStore";
 import { useProductStore } from "~/stores/useProductStore";
 import { CheckCheckIcon } from "lucide-react";
+import { formatCurrency } from "~/lib/formatters";
 
 export function CheckoutForm() {
   const { items: cartItems, clearCart } = useCartStore();
@@ -167,10 +168,7 @@ export function CheckoutForm() {
             const variant = product.variants.find(
               (v) => v.id === item.variantId,
             );
-            const price = new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: "USD",
-            }).format(product.price);
+            const price = formatCurrency(product.price);
             return (
               <div
                 key={`${item.productId}-${item.variantId}`}

@@ -6,6 +6,7 @@ import type { Product, ProductVariant } from "~/types/Product";
 import { fetchProductById } from "~/api/client";
 import { useCartStore } from "~/stores/useCartStore";
 import { Alert, AlertDescription } from "~/components/ui/alert";
+import { formatCurrency } from "~/lib/formatters";
 
 /**
  * Loader React Router (SSR & SPA)
@@ -111,10 +112,7 @@ export default function ProductDetail() {
     }
   }, [product, selectedVariant]);
 
-  const price = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(product.price);
+  const price = formatCurrency(product.price);
 
   const handleAddToCart = () => {
     if (!selectedVariant) return;
@@ -147,7 +145,7 @@ export default function ProductDetail() {
 
         {/* Product Info */}
         <div>
-          <BadgeIcon variant="secondary" className="mb-2 capitalize">
+          <BadgeIcon className="mb-2 capitalize">
             {product.category.replace("-", " ")}
           </BadgeIcon>
           <h1 className="text-3xl font-bold">{product.name}</h1>

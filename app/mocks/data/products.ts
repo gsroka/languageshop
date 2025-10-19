@@ -12,7 +12,7 @@ export const mockProducts: Product[] = [
       { id: "1-s-black", size: "S", color: "Black", inStock: true },
       { id: "1-m-black", size: "M", color: "Black", inStock: true },
       { id: "1-l-black", size: "L", color: "Black", inStock: false },
-      { id: "1-s-navy", size: "S", color: "Navy", inStock: true },
+      { id: "1-s-navy", size: "XL", color: "Navy", inStock: true },
     ],
     tags: ["comfortable", "cotton", "logo"]
   },

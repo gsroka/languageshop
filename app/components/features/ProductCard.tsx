@@ -11,27 +11,18 @@ import { BadgeIcon, ShoppingCartIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { useCartStore } from "~/stores/useCartStore";
 import { Link } from "react-router";
+import { formatCurrency } from "~/lib/formatters";
 
 type ProductCardProps = {
   product: Product;
 };
 
 /**
- * Format price as currency
- * @param price
- */
-const formatPrice = (price: number) =>
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(price);
-
-/**
  * Reusable product card displaying name, price, category, and image.
  * Optimized with React.memo to prevent unnecessary re-renders.
  */
 export const ProductCard: React.FC<ProductCardProps> = memo(({ product }) => {
-  const price = useMemo(() => formatPrice(product.price), [product.price]);
+  const price = useMemo(() => formatCurrency(product.price), [product.price]);
   const { addItem } = useCartStore();
 
   const handleAddToCart = () => {
@@ -71,7 +62,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product }) => {
         </CardContent>
         <CardFooter className="mt-auto flex justify-between p-4 pt-2">
           <span className="text-lg font-bold">{price}</span>
-          <Button size="sm" variant="outline" onClick={handleAddToCart} disabled={!product.variants.some(v => v.inStock)}>
+          <Button size="sm" onClick={handleAddToCart} disabled={!product.variants.some(v => v.inStock)}>
             <ShoppingCartIcon className="mr-1 h-4 w-4" />
             {product.variants.some(v => v.inStock) ? "Add to Cart" : "Out of Stock"}
           </Button>

@@ -5,6 +5,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { Trash2Icon } from "lucide-react";
 import { Link } from "react-router";
+import { formatCurrency } from "~/lib/formatters";
 
 type CartItemProps = {
   productId: string;
@@ -29,10 +30,7 @@ export const CartItem: React.FC<CartItemProps> = memo(
     // Check if products, product, or variant are available
     if (!Array.isArray(products) || !product || !variant) return null;
 
-    const price = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(product.price);
+    const price = formatCurrency(product.price);
 
     return (
       <div
