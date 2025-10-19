@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
-import { Link, useLoaderData, useNavigate } from "react-router";
+import { Link, useLoaderData } from "react-router";
 import { Button } from "~/components/ui/button";
 import { BadgeIcon, ShoppingCartIcon } from "lucide-react";
 import type { Product, ProductVariant } from "~/types/Product";
 import { fetchProductById } from "~/api/client";
-import { useCartStore } from "~/stores/useCartStore";
 import { Alert, AlertDescription } from "~/components/ui/alert";
-import { formatCurrency } from "~/lib/formatters";
+import { useProductDetail } from "~/hooks/useProductDetail";
 
 /**
  * Loader React Router (SSR & SPA)
@@ -93,32 +91,14 @@ function VariantSelector({
  */
 export default function ProductDetail() {
   const product = useLoaderData() as Product;
-  const navigate = useNavigate();
-  const { addItem } = useCartStore();
 
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
-    null,
-  );
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (product && !selectedVariant) {
-      const firstInStock = product.variants.find((v) => v.inStock);
-      if (firstInStock) {
-        setSelectedVariant(firstInStock);
-      } else {
-        setError("This product is currently out of stock.");
-      }
-    }
-  }, [product, selectedVariant]);
-
-  const price = formatCurrency(product.price);
-
-  const handleAddToCart = () => {
-    if (!selectedVariant) return;
-    addItem(product.id, selectedVariant.id);
-    navigate("/cart");
-  };
+  const {
+    selectedVariant,
+    setSelectedVariant,
+    error,
+    handleAddToCart,
+    price,
+  } = useProductDetail(product);
 
   return (
     <div className="container mx-auto px-4">
