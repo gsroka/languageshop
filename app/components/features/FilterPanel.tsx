@@ -1,6 +1,6 @@
 import { useFilterStore } from "~/stores/useFilterStore";
 import { useProductStore } from "~/stores/useProductStore";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Button } from "~/components/ui/button";
 import { Label } from "~/components/ui/label";
 import { Input } from "~/components/ui/input";

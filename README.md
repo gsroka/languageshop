@@ -200,10 +200,10 @@ pnpm test:e2e     # Run Playwright E2E tests
 - [x] E2E test: add to cart → checkout (Playwright)
 
 ### Phase 9: Polish & Performance
-- [ ] Lazy-load images (`loading="lazy"`)
-- [ ] Optimize re-renders (`React.memo`, `useCallback`)
-- [ ] Add meta tags, favicon, PWA icons
-- [ ] Lighthouse audit → fix accessibility/performance
+- [x] Lazy-load images (`loading="lazy"`)
+- [x] Optimize re-renders (`React.memo`, `useCallback`)
+- [x] Add meta tags, favicon, PWA icons
+- [x] Lighthouse audit → fix accessibility/performance
 
 </details>
 
