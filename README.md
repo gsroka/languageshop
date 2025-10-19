@@ -195,9 +195,9 @@ pnpm test:e2e     # Run Playwright E2E tests
 - [x] Test offline mode in DevTools
 
 ### Phase 8: Testing
-- [ ] Unit tests for Zustand stores (Vitest)
-- [ ] Component tests (RTL): `ProductCard`, `Cart`
-- [ ] E2E test: add to cart → checkout (Playwright)
+- [x] Unit tests for Zustand stores (Vitest)
+- [x] Component tests (RTL): `ProductCard`, `Cart`
+- [x] E2E test: add to cart → checkout (Playwright)
 
 ### Phase 9: Polish & Performance
 - [ ] Lazy-load images (`loading="lazy"`)
