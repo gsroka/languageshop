@@ -17,16 +17,12 @@ export const ProductList = () => {
 
   useEffect(() => {
     if (products.length === 0 && !loading) {
-      console.log("ProductList: Initiating fetchProducts"); // Debug log
-
       hasFetchedInitialData.current = true;
       fetchProducts();
     }
-  }, [products.length, loading]);
+  }, [products.length, loading, fetchProducts]);
 
   if (error) {
-    console.log("ProductList: Showing error -", error); // Debug log
-
     return (
       <div className="container mx-auto py-8 px-4 text-center text-destructive">
         Failed to load products. Please try again later.
@@ -35,8 +31,6 @@ export const ProductList = () => {
   }
 
   if (loading) {
-    console.log("ProductList: Showing loading skeletons"); // Debug log
-
     return (
       <div className="container mx-autopx-4">
         <h1 className="mb-6 text-3xl font-bold">Merch Collection</h1>
@@ -55,9 +49,11 @@ export const ProductList = () => {
   }
 
   // Check if the initial fetch attempt was made
-  if (hasFetchedInitialData.current && !loading && filteredProducts.length === 0) {
-    console.log("ProductList: Showing 'No products match...' message (post-fetch, filtered list is empty)"); // Debug log
-
+  if (
+    hasFetchedInitialData.current &&
+    !loading &&
+    filteredProducts.length === 0
+  ) {
     return (
       <div className="container mx-auto px-4">
         <h1 className="mb-6 text-3xl font-bold">Merch Collection</h1>
@@ -67,12 +63,6 @@ export const ProductList = () => {
       </div>
     );
   }
-
-  console.log(
-    "ProductList: Products loaded, showing filtered results. Count:",
-    filteredProducts.length,
-  ); // Debug log
-  console.log("ProductList: Raw store products count:", products.length); // Debug log
 
   return (
     <div className="container mx-auto px-4">

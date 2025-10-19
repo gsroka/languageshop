@@ -20,9 +20,25 @@ const API_BASE = (() => {
  */
 export async function fetchProducts() {
   const res = await fetch(`${API_BASE}/products`);
-  if (!res.ok) throw new Error("Failed to fetch products");
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch products");
+  }
+
   const data = await res.json();
-  return data as Product[];
+
+  // @info: Prepare a better solution for that in the future
+  // Handle array response (from API route) and paginated response (from MSW)
+  if (Array.isArray(data)) {
+    // API Client: Direct array response
+    return data as Product[];
+  } else if (data && Array.isArray(data.products)) {
+    // API Client: Paginated response
+    return data.products as Product[];
+  } else {
+    console.error("🌐 API Client: Unexpected response format:", data);
+    throw new Error("Invalid response format");
+  }
 }
 
 /**

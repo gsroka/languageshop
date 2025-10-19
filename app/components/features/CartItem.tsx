@@ -21,15 +21,15 @@ export function CartItem({
   variantId: string;
   quantity: number;
 }) {
-  const product = useProductStore((state) =>
-    state.products.find((p) => p.id === productId),
-  );
+  const products = useProductStore((state) => state.products);
+  const product = Array.isArray(products) ? products.find((p) => p.id === productId) : null;
 
   const variant = product?.variants.find((v) => v.id === variantId);
 
   const { updateQuantity, removeItem } = useCartStore();
 
-  if (!product || !variant) return null;
+  // Check if products, product, or variant are available
+  if (!Array.isArray(products) || !product || !variant) return null;
 
   const price = new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -37,7 +37,7 @@ export function CartItem({
   }).format(product.price);
 
   return (
-    <div className="flex items-center gap-4 border-b py-4">
+    <div className="flex items-center gap-4 border-b py-4" data-testid="cart-item">
       <Link to={`/products/${productId}`} className="block h-full">
         <img
           src={product.images[0]}

@@ -15,7 +15,7 @@ interface ProductStore {
 /**
  * Zustand store for managing product data
  */
-export const useProductStore = create<ProductStore>((set) => ({
+export const useProductStore = create<ProductStore>((set, get) => ({
   products: [],
   loading: false,
   error: null,

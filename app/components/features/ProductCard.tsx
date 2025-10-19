@@ -42,7 +42,7 @@ export const ProductCard: React.FC<ProductCardProps> = memo(({ product }) => {
   };
 
   return (
-    <Link to={`/products/${product.id}`} className="block h-full">
+    <Link to={`/products/${product.id}`} className="block h-full" data-testid="product-card">
       <Card className="flex flex-col overflow-hidden">
         <div className="h-48 overflow-hidden bg-muted">
           {product.images[0] ? (

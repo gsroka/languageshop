@@ -27,8 +27,12 @@ export const useFilterStore = create<FilterStore>((set, get) => ({
   inStock: false,
   searchQuery: "",
 
-  setCategory: (category) => set({ category }),
-  setPriceRange: (priceRange) => set({ priceRange }),
+  setCategory: (category) => {
+    set({ category });
+  },
+  setPriceRange: (priceRange) => {
+    set({ priceRange });
+  },
   toggleSize: (size) =>
     set((state) => {
       const sizes = state.sizes.includes(size)
@@ -41,11 +45,16 @@ export const useFilterStore = create<FilterStore>((set, get) => ({
       const colors = state.colors.includes(color)
         ? state.colors.filter((c) => c !== color)
         : [...state.colors, color];
+      console.log("🔧 FilterStore: toggleColor", color, "->", colors);
       return { colors };
     }),
-  setInStock: (inStock) => set({ inStock }),
-  setSearchQuery: (searchQuery) => set({ searchQuery }),
-  resetFilters: () =>
+  setInStock: (inStock) => {
+    set({ inStock });
+  },
+  setSearchQuery: (searchQuery) => {
+    set({ searchQuery });
+  },
+  resetFilters: () => {
     set({
       category: null,
       priceRange: DEFAULT_PRICE_RANGE,
@@ -53,5 +62,6 @@ export const useFilterStore = create<FilterStore>((set, get) => ({
       colors: [],
       inStock: false,
       searchQuery: "",
-    }),
+    });
+  },
 }));
