@@ -46,6 +46,12 @@ export const mockProducts: Product[] = [
   }
 ];
 
+export const mockCartItems = [
+  { productId: "1", variantId: "1-m-black", quantity: 2 },
+  { productId: "2", variantId: "2-s-white", quantity: 1 },
+  { productId: "3", variantId: "3-onesize-white", quantity: 1 },
+];
+
 export async function getProducts(): Promise<Product[]> {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 100));
