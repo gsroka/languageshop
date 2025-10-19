@@ -55,7 +55,7 @@ export default function CartPage() {
 
   return (
     <div className="container">
-      <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
+      <h1 className="text-3xl font-bold mb-6" data-testid="shopping-cart-title">Shopping Cart</h1>
       <div className="space-y-4">
         {items.map((item) => (
           <CartItem
