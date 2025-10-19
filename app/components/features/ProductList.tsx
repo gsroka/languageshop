@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { Skeleton } from "~/components/ui/skeleton";
 import { useFilteredProducts } from "~/hooks/useFilteredProducts";
 import { ProductCard } from "~/components/features/ProductCard";
+import { StateDisplay } from "~/components/shared/state-display";
 
 /**
  * Product List Component
@@ -23,11 +24,7 @@ export const ProductList = () => {
   }, [products.length, loading, fetchProducts]);
 
   if (error) {
-    return (
-      <div className="container mx-auto py-8 px-4 text-center text-destructive">
-        Failed to load products. Please try again later.
-      </div>
-    );
+    return <StateDisplay state="error" message="Failed to load products. Please try again later." />;
   }
 
   if (loading) {
@@ -54,14 +51,7 @@ export const ProductList = () => {
     !loading &&
     filteredProducts.length === 0
   ) {
-    return (
-      <div className="container mx-auto px-4">
-        <h1 className="mb-6 text-3xl font-bold">Merch Collection</h1>
-        <div className="col-span-full py-12 text-center text-muted-foreground">
-          No products match your search criteria.
-        </div>
-      </div>
-    );
+    return <StateDisplay state="empty" message="No products match your search criteria." />;
   }
 
   return (

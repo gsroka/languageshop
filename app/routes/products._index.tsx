@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { fetchProducts } from "~/api/client";
 import type { Product } from "~/types/Product";
+import { StateDisplay } from "~/components/shared/state-display";
 
 /**
  * Products List Page
@@ -26,8 +27,8 @@ export default function ProductsList() {
     loadProducts();
   }, []);
 
-  if (loading) return <div className="p-6">Loading products...</div>;
-  if (error) return <div className="p-6">Error: {error}</div>;
+  if (loading) return <StateDisplay state="loading" />;
+  if (error) return <StateDisplay state="error" message={error} />;
 
   return (
     <div className="p-6">

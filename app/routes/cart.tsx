@@ -4,6 +4,7 @@ import { CartItem } from "~/components/features/CartItem";
 import { Button } from "~/components/ui/button";
 import { Link } from "react-router";
 import { useEffect } from "react";
+import { StateDisplay } from "~/components/shared/state-display";
 
 /**
  * Cart Page
@@ -19,27 +20,15 @@ export default function CartPage() {
   }, [fetchProducts]);
 
   if (!hasHydrated || loading) {
-    return (
-      <div className="container py-12 text-center">
-        <p>Loading cart...</p>
-      </div>
-    );
+    return <StateDisplay state="loading" title="Loading Cart" />;
   }
 
   if (error) {
-    return (
-      <div className="container py-12 text-center">
-        <p>Error loading products: {error}</p>
-      </div>
-    );
+    return <StateDisplay state="error" message={`Error loading products: ${error}`} />;
   }
 
   if (!Array.isArray(products) || products.length === 0) {
-    return (
-      <div className="container py-12 text-center">
-        <p>No products available</p>
-      </div>
-    );
+    return <StateDisplay state="empty" message="No products available" />;
   }
 
   if (items.length === 0) {
